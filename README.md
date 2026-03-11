@@ -1,38 +1,60 @@
 # hytale-plugin-template-advanced
 
-## Overview
+Advanced plugin starter with multiple production-style systems wired together:
 
-A multi-system foundation with lifecycle guards, task loops, and operational diagnostics. This repository is a practical starting point for a Hytale plugin.
+- sender-scoped action rate limiting
+- async job queue with retries
+- provider circuit-breaker behavior
+- license validation + binding cache
+- snapshot persistence + restore
+- rolling runtime audit trail
 
-## Main entrypoint
-
-- Main class from manifest.json: net.hytaledepot.templates.plugin.advanced.AdvancedPluginTemplate
-- Includes asset pack: false
-
-## Source layout
-
-- Java sources: src/main/java
-- Manifest: src/main/resources/manifest.json
-- Runtime jar output: build/libs/hytale-plugin-template-advanced-1.0.0.jar
-
-## Key classes
-
-- AdvancedPluginTemplate
+Main class: `net.hytaledepot.templates.plugin.advanced.AdvancedPluginTemplate`
 
 ## Commands
 
-- /hdadvancedflush
-- /hdadvancedstatus
+- `/hdadvancedstatus`  
+  Shows lifecycle, heartbeat/maintenance state, counters, queue/breaker status, and last audit line.
+- `/hdadvanceddemo <action> [args...]`  
+  Runs advanced demo actions.
+- `/hdadvancedflush`  
+  Writes the runtime snapshot immediately.
+
+## Demo actions
+
+Run through these in order to see the full flow:
+
+1. `/hdadvanceddemo queue-job`
+2. `/hdadvanceddemo queue-fragile`
+3. `/hdadvanceddemo process-job`
+4. `/hdadvanceddemo drain-jobs`
+5. `/hdadvanceddemo simulate-provider-failure`
+6. `/hdadvanceddemo recover-provider`
+7. `/hdadvanceddemo validate-license HD-DEMO-LICENSE 127.0.0.1`
+8. `/hdadvanceddemo bind-license HD-DEMO-LICENSE 127.0.0.1`
+9. `/hdadvanceddemo flush-snapshot`
+10. `/hdadvanceddemo info`
+
+If you spam demo actions too quickly, the quota guard blocks requests for a short window.
+
+## Snapshot file
+
+The plugin writes metrics and runtime state to:
+
+`<plugin-data-dir>/advanced-plugin-state.properties`
+
+It is restored during setup so counters survive restarts.
 
 ## Build
 
-1. Ensure the server jar is available in one of these locations:
-   - HYTALE_SERVER_JAR
-   - HYTALE_HOME/install/$patchline/package/game/latest/Server/HytaleServer.jar
-   - workspace root HytaleServer.jar
-   - libs/HytaleServer.jar
-2. Run: ./gradlew clean build
-3. Copy build/libs/hytale-plugin-template-advanced-1.0.0.jar into your server mods/ folder.
+1. Ensure `HytaleServer.jar` is available (workspace root, `HYTALE_SERVER_JAR`, launcher path, or `libs/`).
+2. Run:
+
+```bash
+./gradlew clean build
+```
+
+3. Copy `build/libs/hytale-plugin-template-advanced-1.0.0.jar` into `mods/`.
 
 ## License
 

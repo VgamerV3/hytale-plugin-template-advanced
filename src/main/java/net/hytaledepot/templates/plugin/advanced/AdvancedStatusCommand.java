@@ -36,7 +36,7 @@ public final class AdvancedStatusCommand extends AbstractCommand {
   @Override
   protected CompletableFuture<Void> execute(CommandContext ctx) {
     state.incrementStatusRequests();
-    String sender = String.valueOf(ctx.sender().getDisplayName());
+    String sender = String.valueOf(ctx.sender().getUsername());
 
     ctx.sendMessage(
         Message.raw(

@@ -25,7 +25,7 @@ public final class AdvancedDemoCommand extends AbstractCommand {
   protected CompletableFuture<Void> execute(CommandContext ctx) {
     state.incrementCommandRequests();
     ParsedInput input = ParsedInput.parse(ctx.getInputString());
-    String sender = String.valueOf(ctx.sender().getDisplayName());
+    String sender = String.valueOf(ctx.sender().getUsername());
 
     String result =
         demoService.applyAction(

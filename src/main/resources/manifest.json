@@ -1,15 +1,15 @@
 {
     "Group": "HytaleDepot",
     "Name": "AdvancedPluginTemplate",
-    "Version": "1.0.0",
-    "Description": "Hytale Depot plugin template for advanced.",
+    "Version": "1.1.0",
+    "Description": "Hytale 0.5.3 plugin starter for advanced runtime patterns.",
     "Authors": [
         {
             "Name": "Hytale Depot"
         }
     ],
     "Website": "https://github.com/VgamerV3/hytale-plugin-template-advanced",
-    "ServerVersion": "2026.02.19-1a311a592",
+    "ServerVersion": "0.5.3",
     "Dependencies": {
         
     },

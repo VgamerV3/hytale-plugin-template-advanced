@@ -1,61 +1,43 @@
 # hytale-plugin-template-advanced
 
-Advanced plugin starter with multiple production-style systems wired together:
+A production-minded plugin starter that demonstrates rate limiting, queued jobs, circuit-breaker style recovery, and cached license validation patterns.
 
-- sender-scoped action rate limiting
-- async job queue with retries
-- provider circuit-breaker behavior
-- license validation + binding cache
-- snapshot persistence + restore
-- rolling runtime audit trail
+## Highlights
+- heartbeat-driven maintenance and queue processing
+- guard rails for quotas, retries, and provider failures
+- snapshot persistence that can be extended into real storage
 
-Main class: `net.hytaledepot.templates.plugin.advanced.AdvancedPluginTemplate`
-
-## Commands
-
-- `/hdadvancedstatus`  
-  Shows lifecycle, heartbeat/maintenance state, counters, queue/breaker status, and last audit line.
-- `/hdadvanceddemo <action> [args...]`  
-  Runs advanced demo actions.
-- `/hdadvancedflush`  
-  Writes the runtime snapshot immediately.
-
-## Demo actions
-
-Run through these in order to see the full flow:
-
-1. `/hdadvanceddemo queue-job`
-2. `/hdadvanceddemo queue-fragile`
-3. `/hdadvanceddemo process-job`
-4. `/hdadvanceddemo drain-jobs`
-5. `/hdadvanceddemo simulate-provider-failure`
-6. `/hdadvanceddemo recover-provider`
-7. `/hdadvanceddemo validate-license HD-DEMO-LICENSE 127.0.0.1`
-8. `/hdadvanceddemo bind-license HD-DEMO-LICENSE 127.0.0.1`
-9. `/hdadvanceddemo flush-snapshot`
-10. `/hdadvanceddemo info`
-
-If you spam demo actions too quickly, the quota guard blocks requests for a short window.
-
-## Snapshot file
-
-The plugin writes metrics and runtime state to:
-
-`<plugin-data-dir>/advanced-plugin-state.properties`
-
-It is restored during setup so counters survive restarts.
+## Requirements
+- Java 25
+- Hytale Server 0.5.3
+- the included Gradle wrapper
 
 ## Build
-
-1. Ensure `HytaleServer.jar` is available (workspace root, `HYTALE_SERVER_JAR`, launcher path, or `libs/`).
-2. Run:
-
 ```bash
 ./gradlew clean build
 ```
 
-3. Copy `build/libs/hytale-plugin-template-advanced-1.0.0.jar` into `mods/`.
+Built jars are written to `build/libs/hytale-plugin-template-advanced-1.1.0.jar`, with matching sources and javadoc jars next to it.
 
-## License
+## Commands
+- `/hdadvanceddemo`: Runs an advanced demo action.
+- `/hdadvancedflush`: Flushes advanced runtime snapshot.
+- `/hdadvancedstatus`: Shows status for the advanced template plugin.
 
-MIT
+## Project Layout
+- `src/main/java`: plugin entry point, commands, state objects, and service logic
+- `src/main/resources/manifest.json`: metadata, entry class, and server target
+
+## Install
+1. Build the project with `./gradlew clean build`.
+2. Copy `build/libs/hytale-plugin-template-advanced-1.1.0.jar` into your server `plugins/` directory.
+3. Restart the server and run the included commands to confirm the template loaded correctly.
+
+## What to Change First
+- rename the package, command names, and manifest identifiers to match your project
+- replace the demo actions with your real gameplay, economy, networking, or UI logic
+- move any persistent state into the storage or config format you actually want to support
+
+## Notes
+- The Gradle build auto-detects a local `HytaleServer.jar` when one is nearby, but it can also resolve `com.hypixel.hytale:Server:0.5.3` directly from the Hytale Maven.
+- The templates are intentionally small enough to read in one sitting, so you can copy them into a new repo and start renaming immediately.
